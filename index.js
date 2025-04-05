@@ -6,6 +6,10 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+    res.json({ message: 'Welcome to the Recipe API' });
+  });
+
 // Initialize the OpenAI client directly with the API key
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY, // Ensure this is set in your .env file
