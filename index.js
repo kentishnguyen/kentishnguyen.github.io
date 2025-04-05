@@ -35,16 +35,8 @@ app.post('/get-recipes', async (req, res) => {
     console.log('Calling Gemini API with ingredients:', ingredients); // Debug log
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }); // Use Gemini model
 
-    const prompt = [
-      {
-        role: 'user',
-        parts: [{ text: 'You are a helpful assistant that suggests recipes based on ingredients.' }],
-      },
-      {
-        role: 'user',
-        parts: [{ text: `I have the following ingredients: ${ingredients}. What can I cook?` }],
-      },
-    ];
+    // Combine system instruction and user query into a single string
+    const prompt = `You are a helpful assistant that suggests recipes based on ingredients. I have the following ingredients: ${ingredients}. What can I cook?`;
 
     const result = await model.generateContent(prompt);
     const reply = result.response.text();
