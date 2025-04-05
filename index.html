@@ -2,72 +2,150 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Meal Plan Suggestion</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
-    }
-    textarea {
-      width: 100%;
-      max-width: 100%;
+    * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      color: #34495e;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 2px solid #dcdcdc;
+      border-radius: 8px;
+      resize: vertical;
+      min-height: 120px;
+      transition: border-color 0.3s ease;
+    }
+
+    textarea:focus {
+      border-color: #3498db;
+      outline: none;
+    }
+
     button {
-      padding: 10px 20px;
-      background-color: #4CAF50;
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background-color: #3498db;
       color: white;
+      font-size: 1.1rem;
+      font-weight: 500;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
+      margin-top: 15px;
+      transition: background-color 0.3s ease;
     }
+
     button:hover {
-      background-color: #45a049;
+      background-color: #2980b9;
     }
+
     #recipes-result {
-      margin-top: 20px;
+      margin-top: 25px;
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
       white-space: pre-wrap;
+      line-height: 1.6;
+      color: #2c3e50;
+      border: 1px solid #ececec;
+    }
+
+    .error {
+      color: #e74c3c;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      textarea, button {
+        font-size: 0.9rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Meal Plan Suggestion Service</h1>
-  <form id="ingredients-form">
-    <label for="ingredients">Enter available ingredients:</label><br>
-    <textarea id="ingredients" name="ingredients" rows="5" cols="50" placeholder="e.g., chicken, rice, broccoli"></textarea><br><br>
-    <button type="submit">Get Recipes</button>
-  </form>
-  <div id="recipes-result"></div>
+  <div class="container">
+    <h1>Meal Plan Suggestion</h1>
+    <form id="ingredients-form">
+      <label for="ingredients">Enter Your Ingredients</label>
+      <textarea id="ingredients" name="ingredients" placeholder="e.g., chicken, rice, broccoli"></textarea>
+      <button type="submit">Get Recipes</button>
+    </form>
+    <div id="recipes-result"></div>
+  </div>
 
   <script>
     document.getElementById("ingredients-form").addEventListener("submit", async function (e) {
       e.preventDefault();
-      const ingredients = document.getElementById("ingredients").value;
+      const ingredients = document.getElementById("ingredients").value.trim();
+      const resultDiv = document.getElementById("recipes-result");
+      resultDiv.innerText = '';
+      resultDiv.classList.remove('error');
 
       try {
-        // Send POST request to the server
         const response = await fetch('/get-recipes', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ingredients })
         });
-
-        // Parse the JSON response
         const data = await response.json();
-
-        // Check if the response is successful (status 200-299)
         if (response.ok) {
-          document.getElementById("recipes-result").innerText = data.recipes;
+          resultDiv.innerText = data.recipes;
         } else {
-          document.getElementById("recipes-result").innerText = `Error: ${data.error}`;
+          resultDiv.innerText = data.error || 'An unexpected error occurred';
+          resultDiv.classList.add('error');
         }
       } catch (error) {
-        // Handle network errors or other fetch-related issues
-        console.error('Error:', error);
-        document.getElementById("recipes-result").innerText = `Error: ${error.message}`;
+        console.error('Fetch error:', error);
+        resultDiv.innerText = 'Failed to connect to the server';
+        resultDiv.classList.add('error');
       }
     });
   </script>
