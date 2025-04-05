@@ -7,7 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 
-// Serve the index.html file at the root URL
+// Serve static files (like index.html)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -16,13 +16,22 @@ app.get('/', (req, res) => {
 app.post('/get-recipes', async (req, res) => {
   const { ingredients } = req.body;
 
-  // Initialize OpenAI with the API key from environment variables
+  // Check if ingredients are provided
+  if (!ingredients || ingredients.trim() === '') {
+    return res.status(400).json({ error: 'Ingredients are required' });
+  }
+
+  // Initialize OpenAI client
+  if (!process.env.OPENAI_API_KEY) {
+    return res.status(500).json({ error: 'Server configuration error: Missing API key' });
+  }
+
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
   try {
-    // Call the OpenAI API to get recipe suggestions
+    console.log('Calling OpenAI with ingredients:', ingredients); // Debug log
     const chatResponse = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -38,17 +47,18 @@ app.post('/get-recipes', async (req, res) => {
       temperature: 0.7,
     });
 
-    // Extract the recipe suggestions from the API response
     const reply = chatResponse.choices[0].message.content;
+    console.log('OpenAI response:', reply); // Debug log
     res.json({ recipes: reply });
   } catch (error) {
-    // Log the error and send the specific error message to the client
-    console.error('Error calling OpenAI API:', error);
-    const status = error.response ? error.response.status : 500;
-    res.status(status).json({ error: error.message });
+    console.error('Error calling OpenAI API:', error.message); // Log full error
+    if (error.response && error.response.status === 429) {
+      res.status(429).json({ error: 'Quota exceeded. Please check your OpenAI plan.' });
+    } else {
+      res.status(500).json({ error: `Failed to generate recipes: ${error.message}` });
+    }
   }
 });
 
-// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
