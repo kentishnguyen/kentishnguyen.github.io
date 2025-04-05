@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const OpenAI = require('openai'); // Using OpenAI SDK for compatibility with xAI
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const path = require('path');
 require('dotenv').config();
 
@@ -14,11 +14,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Initialize the xAI Grok client using OpenAI-compatible interface
-const client = new OpenAI({
-  apiKey: process.env.XAI_API_KEY, // Use your xAI API key
-  baseURL: 'https://api.x.ai/v1',  // xAI API endpoint
-});
+// Initialize the Gemini client
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Handle POST request to generate recipes
 app.post('/get-recipes', async (req, res) => {
@@ -30,34 +27,33 @@ app.post('/get-recipes', async (req, res) => {
   }
 
   // Check if API key is configured
-  if (!process.env.XAI_API_KEY) {
-    return res.status(500).json({ error: 'Server configuration error: Missing xAI API key' });
+  if (!process.env.GEMINI_API_KEY) {
+    return res.status(500).json({ error: 'Server configuration error: Missing Gemini API key' });
   }
 
   try {
-    console.log('Calling xAI Grok API with ingredients:', ingredients); // Debug log
-    const chatResponse = await client.chat.completions.create({
-      model: 'grok-beta', // Use Grok model (e.g., grok-beta, adjust if needed)
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a helpful assistant that suggests recipes based on ingredients.',
-        },
-        {
-          role: 'user',
-          content: `I have the following ingredients: ${ingredients}. What can I cook?`,
-        },
-      ],
-      temperature: 0.7,
-    });
+    console.log('Calling Gemini API with ingredients:', ingredients); // Debug log
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }); // Use Gemini model
 
-    const reply = chatResponse.choices[0].message.content;
-    console.log('Grok response:', reply); // Debug log
+    const prompt = [
+      {
+        role: 'user',
+        parts: [{ text: 'You are a helpful assistant that suggests recipes based on ingredients.' }],
+      },
+      {
+        role: 'user',
+        parts: [{ text: `I have the following ingredients: ${ingredients}. What can I cook?` }],
+      },
+    ];
+
+    const result = await model.generateContent(prompt);
+    const reply = result.response.text();
+    console.log('Gemini response:', reply); // Debug log
     res.json({ recipes: reply });
   } catch (error) {
-    console.error('Error calling xAI Grok API:', error.message);
-    if (error.response && error.response.status === 429) {
-      res.status(429).json({ error: 'Quota exceeded. Please check your xAI plan.' });
+    console.error('Error calling Gemini API:', error.message);
+    if (error.status === 429) {
+      res.status(429).json({ error: 'Quota exceeded. Please check your Gemini plan.' });
     } else {
       res.status(500).json({ error: `Failed to generate recipes: ${error.message}` });
     }
