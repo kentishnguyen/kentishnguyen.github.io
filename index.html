@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Meal Plan Suggestion</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+    }
+  
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+  
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      resize: vertical;
+    }
+  
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  
+    button:hover {
+      background-color: #218838;
+    }
+  
+    #recipes-result {
+      margin-top: 30px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      white-space: pre-line;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+  
+</head>
+<body>
+  <h1>Meal Plan Suggestion Service</h1>
+  <form id="ingredients-form">
+    <label for="ingredients">Enter available ingredients:</label><br>
+    <textarea id="ingredients" name="ingredients" rows="5" cols="50" placeholder="e.g., chicken, rice, broccoli"></textarea><br><br>
+    <button type="submit">Get Recipes</button>
+  </form>
+  <div id="recipes-result"></div>
+
+  <script>
+    document.getElementById("ingredients-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const ingredients = document.getElementById("ingredients").value;
+
+      const response = await fetch('/get-recipes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ingredients })
+      });
+
+      const data = await response.json();
+      document.getElementById("recipes-result").innerText = data.recipes;
+    });
+  </script>
+</body>
+</html>
