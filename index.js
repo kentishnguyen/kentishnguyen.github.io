@@ -52,3 +52,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+require('dotenv').config();
+console.log('API Key:', process.env.OPENAI_API_KEY); // Should print your key
