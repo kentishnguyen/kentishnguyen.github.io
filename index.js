@@ -1,23 +1,23 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { Configuration, OpenAIApi } = require('openai');
+const OpenAI = require('openai');
 require('dotenv').config();
 
 const app = express();
 app.use(bodyParser.json());
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY, // put your API key in a .env file
+// Initialize the OpenAI client directly with the API key
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // Ensure this is set in your .env file
 });
-
-const openai = new OpenAIApi(configuration);
 
 app.post('/get-recipes', async (req, res) => {
   const { ingredients } = req.body;
 
   try {
-    const chatResponse = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo", // or gpt-4
+    // Use the updated method for chat completions
+    const chatResponse = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo", // or "gpt-4" if you have access
       messages: [
         {
           role: "system",
@@ -31,7 +31,8 @@ app.post('/get-recipes', async (req, res) => {
       temperature: 0.7,
     });
 
-    const reply = chatResponse.data.choices[0].message.content;
+    // Extract the response content
+    const reply = chatResponse.choices[0].message.content;
     res.json({ recipes: reply });
   } catch (error) {
     console.error("Error calling OpenAI API:", error.message);
