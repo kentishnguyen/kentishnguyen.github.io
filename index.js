@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 
 // Initialize the Gemini client
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 // Handle POST request to generate recipes
 app.post('/get-recipes', async (req, res) => {
