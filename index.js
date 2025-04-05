@@ -5,11 +5,9 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-
-// Middleware to parse JSON bodies
 app.use(bodyParser.json());
 
-// Serve the HTML file at the root URL
+// Serve the index.html file at the root URL
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
@@ -18,12 +16,13 @@ app.get('/', (req, res) => {
 app.post('/get-recipes', async (req, res) => {
   const { ingredients } = req.body;
 
-  // Initialize OpenAI with API key from .env
+  // Initialize OpenAI with the API key from environment variables
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
   try {
+    // Call the OpenAI API to get recipe suggestions
     const chatResponse = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -39,19 +38,17 @@ app.post('/get-recipes', async (req, res) => {
       temperature: 0.7,
     });
 
+    // Extract the recipe suggestions from the API response
     const reply = chatResponse.choices[0].message.content;
     res.json({ recipes: reply });
   } catch (error) {
-    console.error('Error calling OpenAI API:', error.message);
-    res.status(500).json({ error: 'Failed to generate recipes' });
+    // Log the error and send the specific error message to the client
+    console.error('Error calling OpenAI API:', error);
+    const status = error.response ? error.response.status : 500;
+    res.status(status).json({ error: error.message });
   }
 });
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-require('dotenv').config();
-console.log('API Key:', process.env.OPENAI_API_KEY); // Should print your key
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

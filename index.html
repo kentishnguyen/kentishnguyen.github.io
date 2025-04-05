@@ -6,48 +6,30 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      padding: 40px;
       max-width: 800px;
-      margin: auto;
+      margin: 0 auto;
+      padding: 20px;
     }
-  
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-  
     textarea {
       width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      resize: vertical;
+      max-width: 100%;
+      box-sizing: border-box;
     }
-  
     button {
-      background-color: #28a745;
-      color: white;
       padding: 10px 20px;
-      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
       border: none;
       cursor: pointer;
-      border-radius: 5px;
     }
-  
     button:hover {
-      background-color: #218838;
+      background-color: #45a049;
     }
-  
     #recipes-result {
-      margin-top: 30px;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      white-space: pre-line;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      white-space: pre-wrap;
     }
   </style>
-  
 </head>
 <body>
   <h1>Meal Plan Suggestion Service</h1>
@@ -63,16 +45,30 @@
       e.preventDefault();
       const ingredients = document.getElementById("ingredients").value;
 
-      const response = await fetch('/get-recipes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ingredients })
-      });
+      try {
+        // Send POST request to the server
+        const response = await fetch('/get-recipes', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ ingredients })
+        });
 
-      const data = await response.json();
-      document.getElementById("recipes-result").innerText = data.recipes;
+        // Parse the JSON response
+        const data = await response.json();
+
+        // Check if the response is successful (status 200-299)
+        if (response.ok) {
+          document.getElementById("recipes-result").innerText = data.recipes;
+        } else {
+          document.getElementById("recipes-result").innerText = `Error: ${data.error}`;
+        }
+      } catch (error) {
+        // Handle network errors or other fetch-related issues
+        console.error('Error:', error);
+        document.getElementById("recipes-result").innerText = `Error: ${error.message}`;
+      }
     });
   </script>
 </body>
