@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js"></script>
   <title>Meal Plan Magic</title>
 </head>
 <body>
-  <!-- Header -->
   <header>
     <h1>Meal Plan Magic</h1>
     <nav>
@@ -18,15 +18,14 @@
     </nav>
   </header>
 
-  <!-- Main Content -->
+  
   <main>
-    <!-- Landing Section -->
+  
     <section class="landing" id="home">
       <h2>Discover Delicious Recipes</h2>
       <p>Turn your ingredients into meals with a touch of magic. Enter what you have, and let’s cook something amazing!</p>
     </section>
 
-    <!-- Filter Section -->
     <section class="filters">
       <h3>Filter Your Preferences</h3>
       <div class="filter-options">
@@ -37,7 +36,6 @@
       </div>
     </section>
 
-    <!-- Recipes Section -->
     <section class="recipes-section" id="recipes">
       <h3>Get Your Recipes</h3>
       <form id="ingredients-form">
@@ -48,7 +46,6 @@
       <div id="recipes-result"></div>
     </section>
 
-    <!-- Food Images Section -->
     <section class="food-images">
       <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop" alt="Pasta Dish">
       <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Salad">
@@ -57,42 +54,10 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer>
     <p>&copy; 2025 Meal Plan Magic. Made with ❤️ for food lovers.</p>
     <p><a href="#home">Home</a> | <a href="#recipes">Recipes</a> | <a href="#about">About</a></p>
   </footer>
 
-  <!-- JavaScript -->
-  <script>
-    (async () => {
-      document.getElementById("ingredients-form").addEventListener("submit", async function (e) {
-        e.preventDefault();
-        const ingredients = document.getElementById("ingredients").value.trim();
-        const resultDiv = document.getElementById("recipes-result");
-        resultDiv.innerText = '';
-        resultDiv.classList.remove('error');
-
-        try {
-          const response = await fetch('/get-recipes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ingredients: ingredients || '' })
-          });
-          const data = await response.json();
-          if (response.ok) {
-            resultDiv.innerText = data.recipes || 'No recipes returned';
-          } else {
-            resultDiv.innerText = data.error || 'An unexpected error occurred';
-            resultDiv.classList.add('error');
-          }
-        } catch (error) {
-          console.error('Fetch error:', error);
-          resultDiv.innerText = 'Failed to connect to the server: ' + error.message;
-          resultDiv.classList.add('error');
-        }
-      });
-    })();
-  </script>
 </body>
 </html>
