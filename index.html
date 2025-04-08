@@ -18,7 +18,7 @@
       line-height: 1.6;
     }
 
-
+    /* Header */
     header {
       background-color: #ff9800;
       padding: 20px;
@@ -49,110 +49,72 @@
       color: #ffe0b2;
     }
 
+    /* Main Content */
     main {
       max-width: 1200px;
       margin: 0 auto;
       padding: 40px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
-  
-    .landing {
-      text-align: center;
-      padding: 60px 20px;
-      background: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop') no-repeat center/cover;
-      color: #fff;
-      border-radius: 15px;
-      margin-bottom: 40px;
+    /* Left Section: Ingredients Input */
+    .ingredients-section {
+      flex: 1;
+      min-width: 300px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
-    .landing h2 {
-      font-size: 2.8rem;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-
-    .landing p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto;
-      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-    }
-
-  
-    .filters {
-      margin-bottom: 40px;
-      text-align: center;
-    }
-
-    .filters h3 {
-      font-size: 1.8rem;
+    .ingredients-section h3 {
+      font-size: 1.5rem;
       margin-bottom: 15px;
       color: #d35400;
     }
 
-    .filter-options {
+    .search-bar {
       display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 15px;
     }
 
-    .filter-options button {
-      padding: 10px 20px;
-      background-color: #fff;
-      border: 2px solid #ff9800;
-      border-radius: 25px;
-      color: #ff9800;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .filter-options button:hover {
-      background-color: #ff9800;
-      color: #fff;
-    }
-
-   
-    .recipes-section {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      margin-bottom: 40px;
-    }
-
-    .recipes-section h3 {
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: #d35400;
-      text-align: center;
-    }
-
-    .recipes-section label {
-      display: block;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-
-    .recipes-section textarea {
-      width: 100%;
-      padding: 12px;
+    .search-bar input {
+      flex: 1;
+      padding: 10px;
       font-size: 1rem;
       border: 2px solid #dcdcdc;
-      border-radius: 8px;
-      resize: vertical;
-      min-height: 120px;
-      transition: border-color 0.3s ease;
-    }
-
-    .recipes-section textarea:focus {
-      border-color: #ff9800;
+      border-radius: 5px 0 0 5px;
       outline: none;
     }
 
-    .recipes-section button {
+    .search-bar button {
+      padding: 10px 15px;
+      background-color: #ff9800;
+      color: #fff;
+      border: none;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #e68a00;
+    }
+
+    .ingredients-list {
+      margin-bottom: 20px;
+    }
+
+    .ingredients-list p {
+      font-size: 1rem;
+      color: #4a2c0f;
+      margin-bottom: 5px;
+    }
+
+    .generate-btn {
       width: 100%;
       padding: 12px;
       background-color: #ff9800;
@@ -161,43 +123,71 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 15px;
       transition: background-color 0.3s ease;
     }
 
-    .recipes-section button:hover {
+    .generate-btn:hover {
       background-color: #e68a00;
     }
 
-    #recipes-result {
-      margin-top: 20px;
-      padding: 15px;
+    /* Right Section: Recipe Names */
+    .recipes-list {
+      flex: 1;
+      min-width: 300px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .recipes-list h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #d35400;
+    }
+
+    .recipes-list ul {
+      list-style: none;
+    }
+
+    .recipes-list li {
+      padding: 10px;
+      margin-bottom: 10px;
       background-color: #fff7e6;
-      border-radius: 8px;
+      border: 1px solid #ffe0b2;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .recipes-list li:hover {
+      background-color: #ffe0b2;
+    }
+
+    /* Recipe Details Section */
+    .recipe-details {
+      width: 100%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+
+    .recipe-details h3 {
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: #d35400;
+    }
+
+    .recipe-details p {
       white-space: pre-wrap;
       color: #4a2c0f;
-      border: 1px solid #ffe0b2;
     }
 
     .error {
       color: #c0392b;
       font-weight: 500;
-    }
-
-    /* Image Section */
-    .food-images {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-
-    .food-images img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     /* Footer */
@@ -219,19 +209,18 @@
     }
 
     @media (max-width: 768px) {
-      .landing h2 {
-        font-size: 2rem;
+      main {
+        flex-direction: column;
       }
-      .landing p {
-        font-size: 1rem;
-      }
-      .filters h3, .recipes-section h3 {
-        font-size: 1.5rem;
+      .ingredients-section, .recipes-list {
+        flex: none;
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
   <header>
     <h1>Meal Plan Magic</h1>
     <nav>
@@ -241,78 +230,137 @@
     </nav>
   </header>
 
+  <!-- Main Content -->
   <main>
-    <section class="landing" id="home">
-      <h2>Discover Delicious Recipes</h2>
-      <p>Turn your ingredients into meals with a touch of magic. Enter what you have, and let’s cook something amazing!</p>
-    </section>
-
-    
-    <section class="filters">
-      <h3>Filter Your Preferences</h3>
-      <div class="filter-options">
-        <button>Low-Calorie</button>
-        <button>High-Protein</button>
-        <button>Vegetarian</button>
-        <button>Quick Meals</button>
+    <!-- Ingredients Section -->
+    <section class="ingredients-section">
+      <h3>Ingredients</h3>
+      <div class="search-bar">
+        <input type="text" id="ingredient-input" placeholder="e.g., chicken, rice, broccoli">
+        <button type="button" onclick="addIngredient()">Add</button>
       </div>
+      <div class="ingredients-list" id="ingredients-list">
+        <!-- Ingredients will be added here dynamically -->
+      </div>
+      <button class="generate-btn" onclick="generateRecipes()">Generate</button>
     </section>
 
- 
-    <section class="recipes-section" id="recipes">
-      <h3>Get Your Recipes</h3>
-      <form id="ingredients-form">
-        <label for="ingredients">Enter Your Ingredients</label>
-        <textarea id="ingredients" name="ingredients" placeholder="e.g., chicken, rice, broccoli"></textarea>
-        <button type="submit">Get Recipes</button>
-      </form>
-      <div id="recipes-result"></div>
+    <!-- Recipes List Section -->
+    <section class="recipes-list">
+      <h3>Names of the Recipes</h3>
+      <ul id="recipe-names">
+        <!-- Recipe names will be added here dynamically -->
+      </ul>
     </section>
 
-    
-    <section class="food-images">
-      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop" alt="Pasta Dish">
-      <img src="https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2019/04/Cobb-Salad-4-1-1024x1536.jpg" alt="Salad">
-      <img src="https://www.southernliving.com/thmb/V_YlWZZX4L-SUWSyV1bE2Fb6g4M=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/27737_SupT_spinbottl_008-1c7b541f7a9f473cb064d686546231d7.jpg" alt="Grilled Chicken">
+    <!-- Recipe Details Section -->
+    <section class="recipe-details" id="recipe-details">
+      <h3>You've Chosen the [Title of the Recipe]</h3>
+      <p id="recipe-instructions">Instructions will appear here after selecting a recipe.</p>
     </section>
   </main>
 
- 
+  <!-- Footer -->
   <footer>
-    <p>&copy; 2025 Meal Plan Magic. Made with ❤️ for food lovers.</p>
+    <p>© 2025 Meal Plan Magic. Made with ❤️ for food lovers.</p>
     <p><a href="#home">Home</a> | <a href="#recipes">Recipes</a> | <a href="#about">About</a></p>
   </footer>
 
-
+  <!-- JavaScript -->
   <script>
-    (async () => {
-      document.getElementById("ingredients-form").addEventListener("submit", async function (e) {
-        e.preventDefault();
-        const ingredients = document.getElementById("ingredients").value.trim();
-        const resultDiv = document.getElementById("recipes-result");
-        resultDiv.innerText = '';
-        resultDiv.classList.remove('error');
+    let ingredients = [];
+    let recipes = [];
 
-        try {
-          const response = await fetch('/get-recipes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ingredients: ingredients || '' })
-          });
-          const data = await response.json();
-          if (response.ok) {
-            resultDiv.innerText = data.recipes || 'No recipes returned';
-          } else {
-            resultDiv.innerText = data.error || 'An unexpected error occurred';
-            resultDiv.classList.add('error');
-          }
-        } catch (error) {
-          console.error('Fetch error:', error);
-          resultDiv.innerText = 'Failed to connect to the server: ' + error.message;
+    // Add ingredient to the list
+    function addIngredient() {
+      const input = document.getElementById('ingredient-input');
+      const ingredient = input.value.trim();
+      if (ingredient) {
+        ingredients.push(ingredient);
+        input.value = '';
+        updateIngredientsList();
+      }
+    }
+
+    // Update the displayed ingredients list
+    function updateIngredientsList() {
+      const list = document.getElementById('ingredients-list');
+      list.innerHTML = ingredients.length ? ingredients.map((item, index) => `<p>${index + 1}. ${item}</p>`).join('') : '<p>No ingredients added yet.</p>';
+    }
+
+    // Generate recipes by calling the API
+    async function generateRecipes() {
+      if (ingredients.length === 0) {
+        alert('Please add at least one ingredient.');
+        return;
+      }
+
+      const resultDiv = document.getElementById('recipe-details');
+      const recipeNamesList = document.getElementById('recipe-names');
+      resultDiv.classList.remove('error');
+
+      try {
+        const response = await fetch('/get-recipes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ingredients: ingredients.join(', ') })
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          // Parse the response into a list of recipes
+          const recipeText = data.recipes || 'No recipes returned';
+          recipes = parseRecipes(recipeText);
+          updateRecipeNames();
+          // Clear the details section until a recipe is selected
+          document.getElementById('recipe-details').innerHTML = '<h3>Select a recipe to view details</h3>';
+        } else {
+          resultDiv.innerText = data.error || 'An unexpected error occurred';
           resultDiv.classList.add('error');
         }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        resultDiv.innerText = 'Failed to connect to the server: ' + error.message;
+        resultDiv.classList.add('error');
+      }
+    }
+
+    // Parse the API response into a list of recipes (simplified)
+    function parseRecipes(text) {
+      const lines = text.split('\n').filter(line => line.trim());
+      const parsedRecipes = [];
+      let currentRecipe = null;
+
+      lines.forEach(line => {
+        if (/^\d+\.\s/.test(line)) {
+          if (currentRecipe) parsedRecipes.push(currentRecipe);
+          currentRecipe = { name: line.replace(/^\d+\.\s/, '').trim(), instructions: '' };
+        } else if (currentRecipe) {
+          currentRecipe.instructions += line + '\n';
+        }
       });
-    })();
+
+      if (currentRecipe) parsedRecipes.push(currentRecipe);
+      return parsedRecipes;
+    }
+
+    // Update the list of recipe names
+    function updateRecipeNames() {
+      const list = document.getElementById('recipe-names');
+      list.innerHTML = recipes.length
+        ? recipes.map((recipe, index) => `<li onclick="showRecipe(${index})">${index + 1}. ${recipe.name}</li>`).join('')
+        : '<li>No recipes found.</li>';
+    }
+
+    // Show the selected recipe's details
+    function showRecipe(index) {
+      const recipe = recipes[index];
+      const detailsDiv = document.getElementById('recipe-details');
+      detailsDiv.innerHTML = `
+        <h3>You've Chosen the "${recipe.name}"</h3>
+        <p>Instructions:<br>${recipe.instructions}</p>
+      `;
+    }
   </script>
 </body>
 </html>
