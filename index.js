@@ -1,54 +1,33 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const path = require('path');
-require('dotenv').config();
-
+const cors = require('cors');
 const app = express();
 
-// Middleware to parse JSON bodies
-app.use(bodyParser.json());
+// Enable CORS
+app.use(cors());
 
-// Serve the index.html file at the root URL
+// Serve static files (like index.html, styles.css, script.js) from the root directory
+app.use(express.static(__dirname, {
+  index: 'index.html'
+}));
+
+// Handle JSON requests for the /get-recipes endpoint
+app.use(express.json());
+
+// Explicitly serve index.html for the root URL
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Initialize the Gemini client
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-
-// Handle POST request to generate recipes
+// Route for /get-recipes
 app.post('/get-recipes', async (req, res) => {
-  const { ingredients } = req.body;
-
-  // Validate input
-  if (!ingredients || ingredients.trim() === '') {
-    return res.status(400).json({ error: 'Ingredients are required' });
-  }
-
-  // Check if API key is configured
-  if (!process.env.GEMINI_API_KEY) {
-    return res.status(500).json({ error: 'Server configuration error: Missing Gemini API key' });
-  }
-
   try {
-    console.log('Calling Gemini API with ingredients:', ingredients); // Debug log
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }); // Use Gemini model
-
-    // Combine system instruction and user query into a single string
-    const prompt = `You are a helpful assistant that suggests recipes based on ingredients. I have the following ingredients: ${ingredients}. What can I cook just based on my ingredients? Please provide brief instructions and please do not ask anymore question`;
-
-    const result = await model.generateContent(prompt);
-    const reply = result.response.text();
-    console.log('Gemini response:', reply); // Debug log
-    res.json({ recipes: reply });
+    const { ingredients } = req.body;
+    // Replace this with your actual Gemini API call
+    const recipes = `1. Sample Recipe\nInstructions: Mix ${ingredients} and cook.`;
+    res.json({ recipes });
   } catch (error) {
-    console.error('Error calling Gemini API:', error.message);
-    if (error.status === 429) {
-      res.status(429).json({ error: 'Quota exceeded. Please check your Gemini plan.' });
-    } else {
-      res.status(500).json({ error: `Failed to generate recipes: ${error.message}` });
-    }
+    res.status(500).json({ error: 'Failed to fetch recipes' });
   }
 });
 
