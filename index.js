@@ -65,7 +65,9 @@ app.post('/get-recipes', async (req, res) => {
     }
 
     // Create a prompt for the Gemini API
-    const prompt = `Generate a list of 3 recipes using the following ingredients: ${ingredients}. For each recipe, provide the name and a brief set of instructions. Format the response as a numbered list, with each recipe name followed by "Instructions:" and the steps.`;
+    const prompt = `Generate a list of 3 recipes using the following ingredients: ${ingredients}. 
+    For each recipe, provide the name and a brief set of instructions and the amount of calories in each serving. 
+    Format the response as a numbered list, with each recipe name followed by "Instructions:" and the steps.`;
 
     // Use the Gemini API to generate recipes
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });

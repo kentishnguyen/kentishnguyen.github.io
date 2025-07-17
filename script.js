@@ -5,7 +5,7 @@ function updateIngredientsList() {
   const input = document.getElementById('ingredient-input').value.trim();
   ingredients = input;
   const list = document.getElementById('ingredients-list');
-  list.innerHTML = ingredients ? `<p>${ingredients}</p>` : '<p>No ingredients entered yet.</p>';
+  list.innerHTML = ingredients ? `<p>  ${ingredients}</p>` : '<p>No ingredients entered yet.</p>';
 }
 
 // Generate recipes by calling the API
