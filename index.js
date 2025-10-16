@@ -70,7 +70,7 @@ app.post('/get-recipes', async (req, res) => {
     Format the response as a numbered list, with each recipe name followed by "Instructions:" and the steps.`;
 
     // Use the Gemini API to generate recipes
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const result = await model.generateContent(prompt);
     const recipes = result.response.text();
 
@@ -90,3 +90,4 @@ app.get('/', (req, res) => {
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
